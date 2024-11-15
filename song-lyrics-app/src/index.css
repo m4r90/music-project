@@ -1,0 +1,84 @@
+/* Basic resets */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.songs-container {
+  max-width: 900px;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.songs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.song-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 280px;
+  transition: transform 0.2s;
+}
+
+.song-card:hover {
+  transform: translateY(-5px);
+}
+
+.song-card h2 {
+  font-size: 1.5rem;
+  color: #1a73e8;
+  margin: 0;
+}
+
+.song-card p {
+  color: #555;
+  margin: 5px 0;
+}
+
+.lyrics {
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recommend-btn {
+  margin-top: 15px;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recommend-btn:hover {
+  background-color: #0f5bb5;
+}
+
+.loader {
+  font-size: 1.5rem;
+  color: #1a73e8;
+  margin-top: 20px;
+}
