@@ -1,0 +1,38 @@
+.songs-page {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.songs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.song-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  background-color: #f9f9f9;
+}
+
+.song-card h2 {
+  font-size: 20px;
+  color: #333;
+}
+
+.song-card p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.lyrics {
+  font-style: italic;
+  color: #888;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}

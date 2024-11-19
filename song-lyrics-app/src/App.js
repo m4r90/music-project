@@ -1,43 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import './index.css'; // Import the CSS file
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import SongsList from './SongsList'; // Composant pour afficher les chansons
 
-const SongsList = () => {
-  const [songs, setSongs] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/songs')  // API endpoint
-      .then(response => response.json())
-      .then(data => {
-        setSongs(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching songs:', error);
-        setLoading(false);
-      });
-  }, []);
-
+const App = () => {
   return (
-    <div className="songs-container">
-      <h1>Song Statistics & Recommendations</h1>
-      {loading ? (
-        <div className="loader">Loading...</div>
-      ) : (
-        <div className="songs-list">
-          {songs.map((song, index) => (
-            <div key={index} className="song-card">
-              <h2>{song.title}</h2>
-              <p><strong>Artist:</strong> {song.artist}</p>
-              <p><strong>Year:</strong> {song.year}</p>
-              <p className="lyrics"><strong>Lyrics:</strong> {song.lyrics}</p>
-              <button className="recommend-btn">Get Recommendations</button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <Router>
+      <nav>
+        <ul style={{ listStyleType: 'none', padding: 0, display: 'flex', gap: '15px' }}>
+          <li><Link to="/">Accueil</Link></li>
+          <li><Link to="/songs">Chansons</Link></li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route path="/" element={<h1>Bienvenue sur l'application de musique</h1>} />
+        <Route path="/songs" element={<SongsList />} />
+      </Routes>
+    </Router>
   );
 };
 
-export default SongsList;
+export default App;
