@@ -10,6 +10,8 @@ const songSchema = new mongoose.Schema({
   lyrics: String,
   id: Number,
   language: String,
+  albumName: String,
+  albumCover: String,
 });
 
 module.exports = mongoose.model('Song', songSchema);
