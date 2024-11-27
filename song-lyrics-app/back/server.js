@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const songRoutes = require('./routes/songs');
+const albumRoutes = require('./routes/albums');
+const artistRoutes = require('./routes/artists');
 
 const app = express();
 const PORT = 3001;

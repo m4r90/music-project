@@ -1,43 +1,66 @@
 const express = require('express');
 const router = express.Router();
 const Song = require('../model/Song');
-const { fetchSpotifyAlbumCover } = require('../services/spotifyService');
+const { fetchSpotifyAlbumCoverAndArtistImage } = require('../services/spotifyService');
 
-// Route pour obtenir les chansons et leur pochette d'album
+// Route pour obtenir les chansons avec vérification des données d'album et image de l'artiste
 router.get('/', async (req, res) => {
     try {
-        const songs = await Song.find().limit(5); // Récupérer les 5 premières chansons de la base de données
-        const songsWithAlbumCovers = await Promise.all(
+        const songs = await Song.find().limit(5); // Récupérer les 8 premières chansons
+
+        const songsWithAlbumCoversAndArtistImages = await Promise.all(
             songs.map(async (song) => {
-                const { albumCover, albumName } = await fetchSpotifyAlbumCover(song.title, song.artist);
-                return { ...song.toObject(), albumCover, albumName };  // Ajouter la pochette et le nom de l'album
+                // Récupérer les infos Spotify (album cover, nom et image de l'artiste)
+                const { albumCover, albumName, artistImage } = await fetchSpotifyAlbumCoverAndArtistImage(song.title, song.artist);
+
+                // Mise à jour uniquement des champs nécessaires
+                if (albumCover || albumName || artistImage) {
+                    await Song.findByIdAndUpdate(
+                        song._id,
+                        {
+                            ...(albumCover && { albumCover }),
+                            ...(albumName && { albumName }),
+                            ...(artistImage && { artistImage }), // Ajouter l'image de l'artiste
+                        },
+                        { new: true } // Renvoie le document mis à jour
+                    );
+                }
+
+                return song.toObject();
             })
         );
-        res.json(songsWithAlbumCovers);  // Retourner les chansons avec leur pochette et nom d'album
+
+        res.json(songsWithAlbumCoversAndArtistImages); // Retourner les chansons mises à jour
     } catch (error) {
         console.error('Error fetching songs:', error);
         res.status(500).send('Error fetching songs');
     }
 });
 
-// Route pour mettre à jour une chanson avec son album et sa pochette
+// Route pour mettre à jour une chanson spécifique avec son album, pochette et image de l'artiste
 router.put('/songs/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, artist } = req.body; // Extrait le titre et l'artiste de la chanson envoyés
+    const { title, artist } = req.body;
 
     try {
-        // Récupérer la pochette et le nom de l'album depuis Spotify
-        const { albumCover, albumName } = await fetchSpotifyAlbumCover(title, artist);
+        // Vérifier si l'album, la pochette et l'image de l'artiste sont déjà présents
+        const song = await Song.findById(id);
+        if (!song) {
+            return res.status(404).send('Song not found');
+        }
 
-        // Mettre à jour la chanson dans la base de données avec les nouvelles informations
-        const updatedSong = await Song.findByIdAndUpdate(
-            id, // ID de la chanson à mettre à jour
-            {
-                albumName: albumName,
-                albumCover: albumCover
-            },
-            { new: true } // Renvoie le document mis à jour
-        );
+        if (song.albumName && song.albumCover && song.artistImage) {
+            return res.status(200).json(song); // Retourner directement si les données existent déjà
+        }
+
+        // Sinon, récupérer les données depuis l'API Spotify
+        const { albumCover, albumName, artistImage } = await fetchSpotifyAlbumCoverAndArtistImage(title, artist);
+
+        // Mettre à jour la chanson dans la base de données
+        song.albumName = albumName;
+        song.albumCover = albumCover;
+        song.artistImage = artistImage;
+        const updatedSong = await song.save();
 
         res.status(200).json(updatedSong); // Retourner la chanson mise à jour
     } catch (error) {

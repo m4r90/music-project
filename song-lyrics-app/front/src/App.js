@@ -1,13 +1,16 @@
-// App.js (Frontend)
-import React from 'react';
-import SongList from './components/SongList';
+import React, { Component } from "react";
+import ChartAlbums from "./components/ChartAlbums"; // Albums uniquement
+import ChartArtists from "./components/ChartArtists"; // Artistes uniquement
 
-const App = () => {
-  return (
-      <div>
-        <SongList />
-      </div>
-  );
-};
+class HomePage extends Component {
+    render() {
+        return (
+            <div className="container-right">
+                <ChartAlbums />
+                <ChartArtists />
+            </div>
+        );
+    }
+}
 
-export default App;
+export default HomePage;

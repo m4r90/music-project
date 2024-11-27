@@ -1,11 +1,9 @@
-// services/songService.js (Backend)
 const axios = require('axios');
 let spotifyToken = null;
 let tokenExpirationTime = 0;
 
 const SPOTIFY_CLIENT_ID = '7c24fbb569e24cbd99ef214213a29302';
 const SPOTIFY_CLIENT_SECRET = 'b09f1f67ea2b45818caee8b91f00a738';
-
 
 // Fonction pour obtenir un nouveau token Spotify
 const fetchSpotifyToken = async () => {
@@ -37,51 +35,47 @@ const getSpotifyToken = async () => {
     return spotifyToken;
 };
 
-// Fonction pour récupérer la pochette d'album Spotify
-const fetchSpotifyAlbumCover = async (songTitle, artistName) => {
+// Fonction pour récupérer la pochette de l'album et l'image de l'artiste
+const fetchSpotifyAlbumCoverAndArtistImage = async (songTitle, artistName) => {
     try {
         // Vérification ou rafraîchissement du token
         const token = await getSpotifyToken();
         if (!token) {
             console.error("Token Spotify invalide ou inexistant");
-            return { albumCover: null, albumName: null };
+            return { albumCover: null, albumName: null, artistImage: null };
         }
 
-        // Construction de la requête
+        // Construction de la requête pour rechercher la chanson et l'artiste
         const query = `${encodeURIComponent(songTitle)} artist:${encodeURIComponent(artistName)}`;
         console.log(`Requête Spotify: ${query}`);
 
         // Envoi de la requête à l'API Spotify
         const response = await axios.get(
-            `https://api.spotify.com/v1/search?q=${query}&type=track`,
+            `https://api.spotify.com/v1/search?q=${query}&type=track,artist`,
             { headers: { Authorization: `Bearer ${token}` } }
         );
-        console.log('Réponse Spotify:', response.data);
+        console.log('Réponse Spotify:', response.data.artists);
 
-        // Vérification des résultats
-        if (response.data && response.data.tracks && response.data.tracks.items && response.data.tracks.items.length > 0) {
+        // Vérification des résultats pour la chanson
+        if (response.data && response.data.tracks && response.data.tracks.items.length > 0) {
             const track = response.data.tracks.items[0];
-            if (track) {
-                // Vérification de la pochette de l'album
-                const albumCover = track.album.images[0]?.url || null;
-                const albumName = track.album.name || null;
-                console.log(`Album: ${albumName}, Pochette: ${albumCover}`);
-                return { albumCover, albumName };
-            } else {
-                console.warn('Aucune piste trouvée');
-                return { albumCover: null, albumName: null };
-            }
+            const albumCover = track.album.images[0]?.url || null;  // Pochette de l'album
+            const albumName = track.album.name || null;
+
+            // Recherche de l'artiste dans la réponse
+            const artist = response.data.artists.items.find(a => a.name.toLowerCase() === artistName.toLowerCase());
+            const artistImage = artist?.images[0]?.url || null;  // Image de l'artiste
+
+            return { albumCover, albumName, artistImage };
         } else {
-            console.warn('Aucun résultat trouvé dans la réponse Spotify');
-            return { albumCover: null, albumName: null };
+            console.warn('Aucune piste trouvée');
+            return { albumCover: null, albumName: null, artistImage: null };
         }
     } catch (error) {
         // Gestion des erreurs
-        console.error('Erreur lors de la récupération de la pochette de l\'album ou du nom de l\'album:', error);
-        return { albumCover: null, albumName: null };
+        console.error('Erreur lors de la récupération de la pochette de l\'album, du nom de l\'album ou de l\'image de l\'artiste:', error);
+        return { albumCover: null, albumName: null, artistImage: null };
     }
 };
 
-
-
-module.exports = { fetchSpotifyAlbumCover };
+module.exports = { fetchSpotifyAlbumCoverAndArtistImage };
