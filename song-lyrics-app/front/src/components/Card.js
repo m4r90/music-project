@@ -6,7 +6,7 @@ const Card = ({ artist }) => {
         <div className="card-artist">
             <img src={artist.artistImage || "default-artist.png"} alt={artist.name} className="artist-image" />
             <div className="artist-info">
-                <h3>{artist.name}</h3>
+                <h3>{artist.artist}</h3>
             </div>
         </div>
     );

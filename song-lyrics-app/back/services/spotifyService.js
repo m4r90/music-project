@@ -1,4 +1,5 @@
 const axios = require('axios');
+
 let spotifyToken = null;
 let tokenExpirationTime = 0;
 
@@ -35,47 +36,96 @@ const getSpotifyToken = async () => {
     return spotifyToken;
 };
 
-// Fonction pour récupérer la pochette de l'album et l'image de l'artiste
+// Fonction pour récupérer la pochette de l'album
+const fetchSpotifyAlbumCover = async (songTitle, artistName) => {
+    try {
+        const token = await getSpotifyToken();
+        if (!token) {
+            console.error("Token Spotify invalide ou inexistant");
+            return null;
+        }
+
+        const query = `${encodeURIComponent(songTitle)} artist:${encodeURIComponent(artistName)}`;
+        console.log(`Requête Spotify pour la chanson: ${query}`);
+
+        // Requête à l'API Spotify pour obtenir les informations de la chanson
+        const response = await axios.get(
+            `https://api.spotify.com/v1/search?q=${query}&type=track`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        console.log('Réponse Spotify pour la chanson:', response.data);
+
+        if (response.data && response.data.tracks.items.length > 0) {
+            const track = response.data.tracks.items[0];
+            const albumCover = track.album.images[0]?.url || null; // Pochette de l'album
+            return albumCover;
+        } else {
+            console.warn('Aucune chanson trouvée');
+            return null;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la pochette de l\'album:', error);
+        return null;
+    }
+};
+
+// Fonction pour récupérer l'image de l'artiste avec l'ID de l'artiste
+const fetchSpotifyArtistImage = async (artistName) => {
+    try {
+        const token = await getSpotifyToken();
+        if (!token) {
+            console.error("Token Spotify invalide ou inexistant");
+            return null;
+        }
+
+        // Remplacer les apostrophes et autres caractères spéciaux dans le nom de l'artiste
+        const query = encodeURIComponent(artistName);
+        console.log(`Recherche Spotify pour l'artiste: ${query}`);
+
+        const response = await axios.get(
+            `https://api.spotify.com/v1/search?q=artist:${query}&type=artist&limit=5`, // Limiter à 5 résultats
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        console.log('Réponse Spotify pour l\'artiste:', response.data);
+
+        if (response.data && response.data.artists.items.length > 0) {
+            const artist = response.data.artists.items[0]; // Prendre le premier artiste trouvé
+            const artistImage = artist.images[0]?.url || null; // Image de l'artiste
+            return artistImage;
+        } else {
+            console.warn('Aucun artiste trouvé');
+            return null;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'image de l\'artiste:', error);
+        return null;
+    }
+};
+
+// Fonction principale ajustée pour récupérer la pochette de l'album et l'image de l'artiste
 const fetchSpotifyAlbumCoverAndArtistImage = async (songTitle, artistName) => {
     try {
-        // Vérification ou rafraîchissement du token
         const token = await getSpotifyToken();
         if (!token) {
             console.error("Token Spotify invalide ou inexistant");
             return { albumCover: null, albumName: null, artistImage: null };
         }
 
-        // Construction de la requête pour rechercher la chanson et l'artiste
-        const query = `${encodeURIComponent(songTitle)} artist:${encodeURIComponent(artistName)}`;
-        console.log(`Requête Spotify: ${query}`);
+        // Première requête pour récupérer la pochette de l'album
+        const albumCover = await fetchSpotifyAlbumCover(songTitle, artistName);
+        console.log('Album cover:', albumCover);
 
-        // Envoi de la requête à l'API Spotify
-        const response = await axios.get(
-            `https://api.spotify.com/v1/search?q=${query}&type=track,artist`,
-            { headers: { Authorization: `Bearer ${token}` } }
-        );
-        console.log('Réponse Spotify:', response.data.artists);
+        // Recherche de l'artiste directement avec le nom
+        const artistImage = await fetchSpotifyArtistImage(artistName);
+        console.log('Artist image:', artistImage);
 
-        // Vérification des résultats pour la chanson
-        if (response.data && response.data.tracks && response.data.tracks.items.length > 0) {
-            const track = response.data.tracks.items[0];
-            const albumCover = track.album.images[0]?.url || null;  // Pochette de l'album
-            const albumName = track.album.name || null;
-
-            // Recherche de l'artiste dans la réponse
-            const artist = response.data.artists.items.find(a => a.name.toLowerCase() === artistName.toLowerCase());
-            const artistImage = artist?.images[0]?.url || null;  // Image de l'artiste
-
-            return { albumCover, albumName, artistImage };
-        } else {
-            console.warn('Aucune piste trouvée');
-            return { albumCover: null, albumName: null, artistImage: null };
-        }
+        return { albumCover, albumName: artistName, artistImage };
     } catch (error) {
-        // Gestion des erreurs
-        console.error('Erreur lors de la récupération de la pochette de l\'album, du nom de l\'album ou de l\'image de l\'artiste:', error);
+        console.error('Erreur lors de la récupération des données:', error);
         return { albumCover: null, albumName: null, artistImage: null };
     }
 };
+
 
 module.exports = { fetchSpotifyAlbumCoverAndArtistImage };

@@ -6,7 +6,7 @@ const { fetchSpotifyAlbumCoverAndArtistImage } = require('../services/spotifySer
 // Route pour obtenir les chansons avec vérification des données d'album et image de l'artiste
 router.get('/', async (req, res) => {
     try {
-        const songs = await Song.find().limit(5); // Récupérer les 8 premières chansons
+        const songs = await Song.find().limit(5); // Récupérer les 5 premières chansons
 
         const songsWithAlbumCoversAndArtistImages = await Promise.all(
             songs.map(async (song) => {
@@ -37,6 +37,8 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+// Route pour mettre à jour une chanson spécifique avec son album, pochette et image de l'artiste
 // Route pour mettre à jour une chanson spécifique avec son album, pochette et image de l'artiste
 router.put('/songs/:id', async (req, res) => {
     const { id } = req.params;
@@ -59,7 +61,7 @@ router.put('/songs/:id', async (req, res) => {
         // Mettre à jour la chanson dans la base de données
         song.albumName = albumName;
         song.albumCover = albumCover;
-        song.artistImage = artistImage;
+        song.artistImage = artistImage; // Enregistrer l'image de l'artiste
         const updatedSong = await song.save();
 
         res.status(200).json(updatedSong); // Retourner la chanson mise à jour
@@ -68,5 +70,6 @@ router.put('/songs/:id', async (req, res) => {
         res.status(500).send('Erreur lors de la mise à jour de la chanson');
     }
 });
+
 
 module.exports = router;

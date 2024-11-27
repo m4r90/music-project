@@ -15,10 +15,11 @@ class ChartArtists extends Component {
         try {
             const response = await axios.get('http://localhost:3001/api/songs'); // Appel à la route générale des chansons
             const artists = response.data
-                .filter(song => song.albumCover && song.albumName) // Filtrer les chansons avec des informations sur l'album
+                .filter(song => song.albumCover && song.albumName && song.artistImage) // S'assurer que toutes les infos sont présentes
                 .map(song => ({
                     artist: song.artist,
                     albumCover: song.albumCover,
+                    artistImage: song.artistImage, // Ajout de l'image de l'artiste
                     id: song._id,
                 }));
 
@@ -27,6 +28,7 @@ class ChartArtists extends Component {
             this.setState({ error: error.message, loading: false });
         }
     }
+
 
     render() {
         const { artists, loading, error } = this.state;
