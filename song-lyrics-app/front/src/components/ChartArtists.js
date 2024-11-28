@@ -23,12 +23,17 @@ class ChartArtists extends Component {
                     id: song._id,
                 }));
 
-            this.setState({ artists, loading: false });
+            // Filtrer les artistes pour ne garder que ceux qui sont uniques par nom
+            const uniqueArtists = Array.from(new Set(artists.map(artist => artist.artist)))
+                .map(artistName => {
+                    return artists.find(artist => artist.artist === artistName);
+                });
+
+            this.setState({ artists: uniqueArtists, loading: false });
         } catch (error) {
             this.setState({ error: error.message, loading: false });
         }
     }
-
 
     render() {
         const { artists, loading, error } = this.state;
@@ -37,16 +42,18 @@ class ChartArtists extends Component {
         if (error) return <p>{error}</p>;
 
         return (
-            <div>
+            <div className="container">
                 <h1>Featured Artists</h1>
                 <div className="artists-container">
-                    {artists.map((artist) => (
+                    {/* Limite les artistes à 12 */}
+                    {artists.slice(0, 12).map((artist) => (
                         <Card key={artist.id} artist={artist} />
                     ))}
                 </div>
             </div>
         );
     }
+
 }
 
 export default ChartArtists;

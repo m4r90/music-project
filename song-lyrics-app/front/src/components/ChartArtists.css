@@ -1,14 +1,29 @@
-/* ChartArtists.module.css */
-
-.artistsContainer {
+.artists-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Espacement entre les albums */
-    justify-content: flex-start; /* Alignement à gauche */
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between
 }
 
-.cardArtist {
-    flex: 1 1 calc(12% - 20px); /* Chaque album occupe 25% de la largeur du container, avec un espace entre eux */
-    max-width: 200px; /* Largeur maximale d'un album */
+.card-artist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+    width: 180px;  /* Définir une largeur fixe */
+    max-width: 200px;  /* Optionnel pour limiter la largeur maximale */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    flex-grow: 0;
+    justify-content: space-between; /* Distribue l'espace entre l'image et le texte */
+}
+
+.container h1 {
+    text-align: left;
     margin-bottom: 20px;
 }

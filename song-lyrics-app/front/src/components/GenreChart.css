@@ -1,0 +1,58 @@
+.genre-chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 12px; /* Arrondir les coins du conteneur */
+    overflow: hidden; /* Cache les parties de l'image qui dépassent */
+    align-content: center;
+}
+
+.genre-chart-container h2 {
+    color: white;
+    text-align: left;
+    margin-bottom: 40px;
+    margin-top: 0px;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;  /* L'image prendra toute la largeur du conteneur */
+    height: 300px; /* Hauteur fixée de l'image */
+}
+
+.genre-image {
+    width: 100%; /* L'image occupe toute la largeur du conteneur */
+    height: 100%; /* L'image occupe toute la hauteur du conteneur */
+    object-fit: cover; /* L'image couvre toute la zone sans être déformée */
+    border-radius: 12px; /* Arrondi les coins de l'image */
+    transition: filter 0.3s ease; /* Effet de flou au survol */
+}
+
+.text-overlay {
+    position: absolute;
+    bottom: 10px; /* Place le texte en bas */
+    right: 10px; /* Place le texte à droite */
+    color: white;
+    text-align: right; /* Aligne le texte à droite */
+    z-index: 1; /* S'assurer que le texte est au-dessus de l'image */
+}
+
+.textGenre {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.image-wrapper:hover .genre-image {
+    filter: blur(8px); /* Flou sur l'image au survol */
+}
+
+.text-overlay h2,
+.text-overlay p {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Ombre pour rendre le texte plus lisible */
+}

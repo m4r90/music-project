@@ -1,0 +1,68 @@
+/* Container principal */
+.stats-container {
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* Barre de navigation centrée horizontalement, en haut */
+.nav-bar {
+    display: flex;
+    height: min-content;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center;     /* Centre verticalement */
+    gap: 20px;
+    margin-bottom: 30px;
+    position: sticky;
+    top: 20px;  /* Garder la barre collée en haut avec un léger décalage */
+    z-index: 10;
+    width: 500px; /* Ajuste la largeur de la barre à celle des boutons */
+    max-width: 1000px; /* S'assure qu'elle n'excède pas la largeur du conteneur principal */
+    margin-left: auto;
+    margin-right: auto;  /* Cela garantit que la barre de navigation est centrée */
+}
+
+/* Boutons de la barre de navigation */
+.nav-btn {
+    background-color: #ff6384;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: center; /* Centrer le texte */
+}
+
+.nav-btn.active {
+    background-color: #36a2eb;
+}
+
+.nav-btn:hover {
+    background-color: #ffce56;
+}
+
+/* Conteneur des graphiques */
+.chart-container {
+    margin-top: 30px;
+    width: 500px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    position: fixed;
+    max-width: 1000px; /* Assurer que les graphiques ne s'étendent pas au-delà du conteneur principal */
+}
+
+/* Titres des graphiques */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}

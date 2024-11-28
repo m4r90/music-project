@@ -1,0 +1,64 @@
+.song-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+.nav-bar-container {
+    margin-bottom: 20px;
+}
+
+.song-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(to right, #6e1ef1, #a56ddc);
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+}
+
+.album-cover {
+    max-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.song-details {
+    flex: 1;
+}
+
+.song-title {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.artist-name,
+.album-name,
+.views-count {
+    font-size: 1.2em;
+    margin: 5px 0;
+}
+
+.song-lyrics {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.song-lyrics h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.song-lyrics pre {
+    white-space: pre-wrap;
+    font-size: 1em;
+    color: #444;
+    line-height: 1.6;
+}

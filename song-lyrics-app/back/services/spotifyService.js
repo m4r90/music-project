@@ -104,6 +104,7 @@ const fetchSpotifyArtistImage = async (artistName) => {
 };
 
 // Fonction principale ajustée pour récupérer la pochette de l'album et l'image de l'artiste
+// Fonction principale ajustée pour récupérer la pochette de l'album, le nom de l'album et l'image de l'artiste
 const fetchSpotifyAlbumCoverAndArtistImage = async (songTitle, artistName) => {
     try {
         const token = await getSpotifyToken();
@@ -116,16 +117,31 @@ const fetchSpotifyAlbumCoverAndArtistImage = async (songTitle, artistName) => {
         const albumCover = await fetchSpotifyAlbumCover(songTitle, artistName);
         console.log('Album cover:', albumCover);
 
+        // Requête pour récupérer les informations sur la chanson
+        const query = `${encodeURIComponent(songTitle)} artist:${encodeURIComponent(artistName)}`;
+        console.log(`Requête Spotify pour la chanson: ${query}`);
+
+        // Récupérer les informations sur la chanson pour le nom de l'album
+        const response = await axios.get(
+            `https://api.spotify.com/v1/search?q=${query}&type=track`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        const albumName = response.data.tracks.items.length > 0
+            ? response.data.tracks.items[0].album.name // Extraire le nom de l'album
+            : null;
+
         // Recherche de l'artiste directement avec le nom
         const artistImage = await fetchSpotifyArtistImage(artistName);
         console.log('Artist image:', artistImage);
 
-        return { albumCover, albumName: artistName, artistImage };
+        return { albumCover, albumName, artistImage };
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
         return { albumCover: null, albumName: null, artistImage: null };
     }
 };
+
 
 
 module.exports = { fetchSpotifyAlbumCoverAndArtistImage };

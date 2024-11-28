@@ -9,6 +9,7 @@ class ChartAlbums extends Component {
         albums: [], // Contiendra des albums extraits des chansons
         loading: true,
         error: null,
+        scrollPosition: 0, // Position actuelle du défilement (index du premier album visible)
     };
 
     async componentDidMount() {
@@ -35,17 +36,53 @@ class ChartAlbums extends Component {
         }
     }
 
+    // Fonction pour défiler vers la gauche (un album à la fois)
+    scrollLeft = () => {
+        this.setState(prevState => {
+            const newScrollPosition = Math.max(prevState.scrollPosition - 1, 0); // Limiter la position de défilement à 0
+            const container = document.querySelector(".albums-container");
+            container.scrollLeft -= container.offsetWidth / 6; // Défilement par un seul album
+            return { scrollPosition: newScrollPosition };
+        });
+    };
+
+    // Fonction pour défiler vers la droite (un album à la fois)
+    scrollRight = () => {
+        const maxScrollPosition = Math.max(0, this.state.albums.length - 6); // Limiter la position max
+        this.setState(prevState => {
+            const newScrollPosition = Math.min(prevState.scrollPosition + 1, maxScrollPosition);
+            const container = document.querySelector(".albums-container");
+            container.scrollLeft += container.offsetWidth / 6; // Défilement par un seul album
+            return { scrollPosition: newScrollPosition };
+        });
+    };
+
     render() {
-        const { albums, loading, error } = this.state;
+        const { albums, loading, error, scrollPosition } = this.state;
 
         if (loading) return <Loading />;
         if (error) return <p>{error}</p>;
 
+        const albumsToDisplay = albums.slice(scrollPosition, scrollPosition + 6); // Afficher 6 albums à la fois
+
         return (
-            <div>
+            <div className="container">
                 <h1>Trending Albums</h1>
+
+                {/* Ajouter les boutons de défilement uniquement si le nombre d'albums est supérieur à 6 */}
+                {albums.length > 6 && (
+                    <div className="scroll-buttons">
+                        <button onClick={this.scrollLeft} className="scroll-left">
+                            &lt;
+                        </button>
+                        <button onClick={this.scrollRight} className="scroll-right">
+                            &gt;
+                        </button>
+                    </div>
+                )}
+
                 <div className="albums-container">
-                    {albums.map((album) => (
+                    {albumsToDisplay.map((album) => (
                         <CardAlbum key={album.id} album={album} />
                     ))}
                 </div>
