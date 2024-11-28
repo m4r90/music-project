@@ -7,4 +7,5 @@ song-lyrics-app/public/
 *.json
 song-lyrics-app/back/node_modules/
 song-lyrics-app/front/node_modules/
+/maoc-music-master
 

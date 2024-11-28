@@ -1,0 +1,144 @@
+.home-page-container {
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.nav-bar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+}
+
+.nav-bar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-bar ul li {
+    margin-bottom: 10px;
+}
+
+.nav-bar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.nav-bar ul li a:hover {
+    text-decoration: underline;
+}
+
+
+.home-content-container {
+    margin-left: 220px;
+    padding-right: 20px;
+    display: block;
+    flex-direction: column; /* Aligne verticalement */
+    align-items: flex-start; /* Ne change pas la taille des éléments */
+    gap: 20px; /* Espacement entre les éléments */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.home-page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.nav-bar-container {
+    background-color: #181818;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.home-content {
+    flex: 1;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+.section {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.chart-items {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+}
+
+.chart-item {
+    min-width: 150px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #2b2b2b;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.chart-item img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.chart-item p {
+    font-size: 1rem;
+    color: #bbb;
+}
+
+.chart-item-title {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.chart-item-subtitle {
+    font-size: 0.9rem;
+    color: #bbb;
+}
+
+
+.chart-tracks-wrapper {
+    display: flex;
+    flex-direction: row; /* Disposition des éléments côte à côte */
+    gap: 20px; /* Espacement entre les deux composants */
+    width: 100%; /* Assurer que la largeur totale de la section est utilisée */
+}
+
+.chart-tracks-wrapper > div {
+    flex: 1; /* Les éléments dans le wrapper occupent une largeur égale */
+    min-width: 0; /* Assure que les éléments ne débordent pas */
+}
+
+.chart-tracks-container {
+    display: flex;
+    flex: 1;
+    justify-content: space-between; /* Pour que les éléments soient alignés correctement */
+}

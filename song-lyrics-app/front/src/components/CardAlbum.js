@@ -6,8 +6,8 @@ const CardAlbum = ({ album }) => {
         <div className="card-album">
             <img src={album.albumCover} alt={album.title} className="album-cover" />
             <div className="album-info">
-                <h3>{album.title}</h3>
                 <p>{album.albumName}</p>
+                <h3>{album.artist}</h3>
             </div>
         </div>
     );

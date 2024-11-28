@@ -1,0 +1,70 @@
+.chart-tracks-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    color: #fff;
+    display: flex;
+    flex-direction: column; /* Ajoute cette ligne pour empiler les éléments verticalement */
+}
+
+.chart-tracks-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px; /* Assure-toi qu'il y a un peu d'espace en dessous du titre */
+    color: #fff;
+    text-align: left;
+}
+
+.track-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px; /* Un peu d'espace au-dessus de la liste */
+}
+
+/* Ajoute des styles supplémentaires si nécessaire */
+
+.track-item {
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.track-item:hover {
+    background-color: #333;
+    transform: scale(1.02);
+}
+
+.track-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+}
+
+.track-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.track-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    flex: 2;
+}
+
+.track-artist,
+.track-album,
+.track-views {
+    font-size: 1rem;
+    color: #bbb;
+    flex: 1;
+    text-align: center;
+}
+
+.track-views {
+    color: #ffc107;
+}
