@@ -6,6 +6,7 @@ import StatisticsPage from './components/StatisticsPage';
 import BillboardPage from './components/BillboardPage';
 import SongPage from "./components/SongPage";
 import MachineLearning from "./components/MachineLearning";
+import SongsPage from "./components/SongsPage";
 import './index.css';
 
 ReactDOM.render(
@@ -16,6 +17,7 @@ ReactDOM.render(
             <Route path="/billboard" element={<BillboardPage />} />
             <Route path="/song/:id" element={<SongPage />} />
             <Route path="/machineLearning" element={<MachineLearning />} />
+            <Route path="/songs" element={<SongsPage/>}/>
         </Routes>
     </Router>,
     document.getElementById('root')

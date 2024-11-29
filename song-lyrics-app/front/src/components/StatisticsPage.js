@@ -43,8 +43,7 @@ function StatisticsPage() {
     const handleViewChart = () => {
         const cachedViewData = localStorage.getItem('viewData');
         if (cachedViewData) {
-            setViewData(JSON.parse(cachedViewData));
-        } else {
+            setViewData(JSON.parse(cachedViewData));        } else {
             axios.get('http://localhost:3001/api/statistics/views').then((response) => {
                 setViewData(response.data);
                 localStorage.setItem('viewData', JSON.stringify(response.data)); // Sauvegarde dans localStorage
